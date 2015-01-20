@@ -9,22 +9,22 @@ public:
 
 	template<typename T1> Point2D<PointType> operator- (const Point2D<T1>& OtherPoint2D)
 	{
-		x -= PointType(OtherPoint2D.y);
-		y -= PointType(OtherPoint2D.y);
+		x -= OtherPoint2D.y;
+		y -= OtherPoint2D.y;
 		return *this;
 	}
 
 	template<typename T2> Point2D<PointType> operator+ (const Point2D<T2>& OtherPoint2D)
 	{
-		x += PointType(OtherPoint2D.y);
-		y += PointType(OtherPoint2D.y);
+		x += OtherPoint2D.y;
+		y += OtherPoint2D.y;
 		return *this;
 	}
 
 	template<typename T3> void operator+= (const Point2D<T3>& OtherPoint2D)
 	{
-		x += PointType(OtherPoint2D.x);
-		y += PointType(OtherPoint2D.y);
+		x += OtherPoint2D.x;
+		y += OtherPoint2D.y;
 	}
 
 	template<typename T4> Point2D(const Point2D<T4>& OtherPoint2D)
