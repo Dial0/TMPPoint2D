@@ -29,14 +29,14 @@ public:
 
 	template<typename T4> Point2D(const Point2D<T4>& OtherPoint2D)
 	{
-		x = PointType(OtherPoint2D.x);
-		y = PointType(OtherPoint2D.y);
+		x = OtherPoint2D.x;
+		y = OtherPoint2D.y;
 	}
 	template<typename T8, typename T9>
 	Point2D(const T8 PointX, const T9 PointY)
 	{
-		x = PointType(PointX);
-		y = PointType(PointY);
+		x = PointX;
+		y = PointY;
 	}
 
 	Point2D()
@@ -60,6 +60,18 @@ public:
 	{
 		output << x << "," << y;
 		return output;
+	}
+
+	template < typename T8 > bool operator==(const Point2D<T8>& OtherPoint2D)
+	{
+		if (x == OtherPoint2D.x && y == OtherPoint2D.y)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 };
