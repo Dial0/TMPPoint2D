@@ -22,17 +22,11 @@ bool checking(std::vector<std::vector<bool>> grid)
 		{
 			if (s == 0)
 			{
-				Point2D<int> out(0, i);
-				Bresenham(cen, out, grid);
-				out = Point2D<int>(19, i);
-				Bresenham(cen, out, grid);
+
 			}
 			else
 			{
-				Point2D<int> out(i, 0);
-				Bresenham(cen, out, grid);
-				out = Point2D<int>(i, 19);
-				Bresenham(cen, out, grid);
+
 			}
 		}
 	}
@@ -43,15 +37,7 @@ bool checking(std::vector<std::vector<bool>> grid)
 void main()
 {
 
-	line<int> line1;
-	line1.start = Point2D<int>(100, 0);
-	line1.end = Point2D<int>(100, 100);
 
-	line<int> line2;
-	line2.start = Point2D<int>(150, 50);
-	line2.end = Point2D<int>(50, 50);
-
-	bool Ints = line1.intersect(line2);
 
 	std::vector<std::vector<bool>> grid;
 

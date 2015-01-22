@@ -4,98 +4,73 @@
 #include "Point2D.h"
 
 template<class PointType>
-class line
+class Line
 {
 public:
 	Point2D<PointType> start;
 	Point2D<PointType> end;
 
-	bool intersect(line<PointType> compare)
+	bool intersects(Line<PointType> compare)
 	{
-		inline double Dot(const Point& a, const Point& b)                        { return (a.x*b.x) + (a.y*b.y); }
-		inline double PerpDot(const Point& a, const Point& b)                    { return (a.y*b.x) - (a.x*b.y); }
+		Point2D<PointType> a(end - start);
+		Point2D<PointType> b(compare.end - compare.start);
+		PointType f = a.PerpDotProd(b);
 
-		bool LineCollision(const Point& A1, const Point& A2,
-			const Point& B1, const Point& B2,
-			double* out = 0)
+		if (!f)
 		{
-			Point a(A2 - A1);
-			Point b(B2 - B1);
-
-			double f = PerpDot(a, b);
-			if (!f)      // lines are parallel
-				return false;
-
-			Point c(B2 - A2);
-			double aa = PerpDot(a, c);
-			double bb = PerpDot(b, c);
-
-			if (f < 0)
-			{
-				if (aa > 0)     return false;
-				if (bb > 0)     return false;
-				if (aa < f)     return false;
-				if (bb < f)     return false;
-			}
-			else
-			{
-				if (aa < 0)     return false;
-				if (bb < 0)     return false;
-				if (aa > f)     return false;
-				if (bb > f)     return false;
-			}
-
-			if (out)
-				*out = 1.0 - (aa / f);
-			return true;
+			return false;
 		}
 
+		Point2D<PointType> c(compare.end - end);
+		PointType aa = a.PerpDotProd(c);
+		PointType bb = b.PerpDotProd(c);
 
+		if (f < 0)
+		{
+			if (aa > 0 || bb > 0 || aa < f || bb < f)
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if (aa < 0 || bb < 0 || aa > f || bb > f)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
-
-	//line();
-	//~line();
 };
-
-
-
-
-
-
-
 
 template<typename T1> void Path(Point2D<T1> Start, Point2D<T1> End, std::vector<std::vector<bool>> Grid)
 {
-
 	//check 4 grid points to see which is closest
 	//each grid point has a cost to avoid going back
 	//only 10 previous grid points stored
-
-
 }
 
-template<typename T1> void Bresenham(Point2D<T1> Start, Point2D<T1> End, std::vector<std::vector<bool>> Grid)
+template<typename T> void Bresenham(Line<T> Line, std::vector<std::vector<bool>> Grid)
 {
-	int x1 = Start.x;
-	int y1 = Start.y;
-	int x2 = End.x;
-	int y2 = End.y;
+	T x1 = Line.Start.x;
+	T y1 = Line.Start.y;
+	T x2 = Line.End.x;
+	T y2 = Line.End.y;
 
-	int delta_x(x2 - x1);
+	T delta_x(x2 - x1);
 
 	// if x1 == x2, then it does not matter what we set here
 	signed char const ix((delta_x > 0) - (delta_x < 0));
 
 	delta_x = std::abs(delta_x) << 1;
 
-	int delta_y(y2 - y1);
+	T delta_y(y2 - y1);
 	// if y1 == y2, then it does not matter what we set here
 	signed char const iy((delta_y > 0) - (delta_y < 0));
 	delta_y = std::abs(delta_y) << 1;
 
-	//origin
-
-	int error;
+	T error;
 	bool shallow;
 	if (delta_x >= delta_y)
 	{
@@ -133,7 +108,7 @@ template<typename T1> void Bresenham(Point2D<T1> Start, Point2D<T1> End, std::ve
 				loop = false;
 			}
 		}
-		else
+		else //tall
 		{
 			if ((error >= 0) && (error || (iy > 0)))
 			{
